@@ -51,6 +51,16 @@ class cpan (
         }
       }
     }
+    Darwin: {
+      if $manage_config {
+        file { '/System/Library/Perl/Extras/5.16/CPAN/Config.pm':
+            ensure => present,
+            owner  => root,
+            group  => root,
+            mode   => '0644',
+            source => 'puppet:///modules/cpan/ConfigBoxen.pm',
+      }
+    }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
     }
