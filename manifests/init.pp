@@ -53,10 +53,11 @@ class cpan (
     }
     Darwin: {
       if $manage_config {
-        file { '/System/Library/Perl/Extras/5.16/CPAN/Config.pm':
+        file { '/opt/boxen/cache/cpan': ensure => directory }
+        file { '/System/Library/Perl/5.16/CPAN/Config.pm':
             ensure => present,
             owner  => root,
-            group  => root,
+            group  => wheel,
             mode   => '0644',
             source => 'puppet:///modules/cpan/ConfigBoxen.pm',
         }

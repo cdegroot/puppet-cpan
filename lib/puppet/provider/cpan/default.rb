@@ -7,17 +7,15 @@ Puppet::Type.type(:cpan).provide( :default ) do
   def install
   end
 
-  def force
-  end
-
   def create
+    cpan = resource[:force] ? "/usr/bin/cpan -f -i " : "/usr/bin/cpan"
     Puppet.info("Installing cpan module #{resource[:name]}. This can take awhile.")
 
-    system("/usr/bin/cpan #{resource[:name]} > /dev/null 2>&1")
+    system("#{cpan} #{resource[:name]}")
     estatus = $?.exitstatus
 
     if estatus != 0
-      raise Puppet::Error, "/usr/bin/cpan #{resource[:name]} failed with error code #{estatus}"
+      raise Puppet::Error, "#{cpan} #{resource[:name]} failed with error code #{estatus}"
     end
   end
 
@@ -25,8 +23,8 @@ Puppet::Type.type(:cpan).provide( :default ) do
   end
 
   def exists?
-    Puppet.debug("perl -M#{resource[:name]} -e1 > /dev/null 2>&1")
-    output = system("/usr/bin/perl -M#{resource[:name]} -e1 > /dev/null 2>&1")
+    Puppet.debug("perl -M#{resource[:name]} -e1")
+    output = system("/usr/bin/perl -M#{resource[:name]} -e1")
     estatus = $?.exitstatus
 
     case estatus
