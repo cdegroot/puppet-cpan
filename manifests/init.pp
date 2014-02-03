@@ -59,6 +59,7 @@ class cpan (
             group  => root,
             mode   => '0644',
             source => 'puppet:///modules/cpan/ConfigBoxen.pm',
+        }
       }
     }
     default: {
